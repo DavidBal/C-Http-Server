@@ -1,0 +1,3 @@
+/Users/davidbaldauf/Projects/Einleben.2/Einleben.2/bin/Release/Einleben.2.exe
+/Users/davidbaldauf/Projects/Einleben.2/Einleben.2/obj/x86/Release/Einleben.2.csproj.CoreCompileInputs.cache
+/Users/davidbaldauf/Projects/Einleben.2/Einleben.2/obj/x86/Release/Einleben.2.exe
