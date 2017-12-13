@@ -27,15 +27,16 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Main.cs" />
-    <Compile Include="Server\ServerMainThread.cs" />
-    <Compile Include="Server\State.cs" />
-    <Compile Include="Server\HttpRequest.cs" />
-    <Compile Include="Server\ServerException.cs" />
-    <Compile Include="Server\HttpResponde.cs" />
+    <Compile Include="src\Server\HttpRequest.cs" />
+    <Compile Include="src\Server\HttpResponde.cs" />
+    <Compile Include="src\Server\ServerException.cs" />
+    <Compile Include="src\Server\ServerMainThread.cs" />
+    <Compile Include="src\Server\State.cs" />
+    <Compile Include="src\Main.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Server\" />
+    <Folder Include="src\" />
+    <Folder Include="src\Server\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
