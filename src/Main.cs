@@ -1,5 +1,6 @@
 ﻿using System;
 using target;
+using Server.Routing;
 namespace Einleben
 {
     public class Startup
@@ -7,7 +8,13 @@ namespace Einleben
         public static int Main()
         {
             Console.WriteLine("__ Starting __");
-            target.ServerMainThread test = new ServerMainThread(8080);
+
+            RoutManager routeManager = new RoutManager();
+
+            routeManager.AddRoute(new RouteTextTest("/testtext"));
+            routeManager.AddRoute(new RouteToFile("/testfile","testfile.html"));
+
+            target.ServerMainThread test = new ServerMainThread(8080, routeManager);
             test.MainLoop();
 
             return 0;

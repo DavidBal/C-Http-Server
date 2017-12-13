@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections;
+using System.Net.Sockets;
+using System.Text;
 
 namespace Server{
-    class HttpResponde{
+    public class HttpResponde{
 
         private String responseType;
-        private int contentlength = 0;
+        private long contentlength = 0;
 
         private int statusCode;
         private String statusCodeText;
 
+        public String GetStatusCodeText() => this.statusCodeText;
 
         public HttpResponde(String responseType){
             this.responseType = responseType;
@@ -52,6 +55,15 @@ namespace Server{
 
         //todo file transfer;
 
+        FileTransfer file = null;
+
+        public void AddContent(FileTransfer file)
+        {
+            this.file = file;
+            this.contentlength += file.GetFileSize();
+            Console.WriteLine("FileSize: {0}; Content: {1}", this.contentlength, file.GetFileSize());
+        }
+
         public String BuildHttpRespond(){
             String respond = "HTTP/1.1 " + this.statusCode + "\n";
             DateTime now = DateTime.Now;
@@ -69,5 +81,36 @@ namespace Server{
             return respond;
         }
 
+        Socket handler;
+        public void SendHttpRespond(Socket handler)
+        {
+            this.handler = handler;
+
+            Send("HTTP/1.1 " + this.statusCode + "\n");
+            DateTime now = DateTime.Now;
+            Send(now.ToLocalTime() + "\n");
+            Send("Server: c#-Server" + "\n");
+            Send("Content-Length: " + this.contentlength + "\n");
+            Send("Connection: Closed" + "\n");
+            //Ende headers
+            Send("\n");
+            //Beginn  contents
+            for (int i = 0; i < this.contentArray.Count; i++)
+            {
+                String t = (String)this.contentArray[i];
+                Send(t + "\n");
+            }
+
+            if(this.file != null)
+            {
+                Console.WriteLine("File Transfer");
+                this.file.TransferFile(this.handler);
+            }
+        }
+
+        private void Send(String data)
+        {
+            this.handler.Send(Encoding.ASCII.GetBytes(data));
+        }
     }
 }

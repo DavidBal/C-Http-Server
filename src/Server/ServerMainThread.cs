@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Text;
 using Server;
+using Server.Routing;
 
 namespace target
 {    
@@ -12,12 +13,15 @@ namespace target
 
         private int port;
 
+        private static RoutManager routManager;
+
         /* 
          * Konstruiert den Main Server Thread von einem gegebnen Port
          */
-        public ServerMainThread(int port)
+        public ServerMainThread(int port, RoutManager routManager)
         {
             this.port = port;
+            ServerMainThread.routManager = routManager;
         }
 
         // Thread signal
@@ -102,54 +106,14 @@ namespace target
                 //Answer Building   
                 Server.HttpResponde response = new HttpResponde("POST");
 
-                response.SetContentType("text/html");
-                response.setStatusCode(200);
+                Router route= ServerMainThread.routManager.GetRouteByUrl(request.GetUrl());
 
-                response.AddContent("<!DOCTYPE html>");
-                response.AddContent("<html>");
-                response.AddContent("<head>");
-                response.AddContent("<title>404 Not Found</title>");
-                response.AddContent("<link rel=\"stylesheet\" type=\"text/css\" href=\"test.css\">");
-                response.AddContent("<script src=\"test.js\"></script>");
-                response.AddContent("</head>");
-                response.AddContent("<body>");
-                response.AddContent("<h1>Not Found</h1>");
-                response.AddContent("<p>" + request.GetUrl() + " - has no Route assigend!</p>");
-                response.AddContent("</body>");
-                response.AddContent("</html>");
+                route.RunRouteTask(response, request);
 
-                Send(state.workSocket, response.BuildHttpRespond());
-            }
-        }
-
-        private static void Send(Socket handler, String data)
-        {
-            // Convert the string data to byte data using ASCII encoding.
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
-
-            // Begin sending the data to the remote device.
-            handler.BeginSend(byteData, 0, byteData.Length, 0,
-                new AsyncCallback(SendCallback), handler);
-        }
-
-        private static void SendCallback(IAsyncResult ar)
-        {
-            try
-            {
-                // Retrieve the socket from the state object.
-                Socket handler = (Socket)ar.AsyncState;
-
-                // Complete sending the data to the remote device.
-                int bytesSent = handler.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+                response.SendHttpRespond(handler);
 
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
             }
         }
     }
