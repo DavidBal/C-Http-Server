@@ -2,7 +2,7 @@
 using target;
 namespace Einleben
 {
-    public class World
+    public class Startup
     {
         public static int Main()
         {
