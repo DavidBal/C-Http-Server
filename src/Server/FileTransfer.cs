@@ -5,6 +5,9 @@ using System;
 
 namespace Server
 {
+    /* 
+     * Class that helps with the file transferation
+     */
     public class FileTransfer
     {
 
@@ -19,11 +22,17 @@ namespace Server
             this.fileSize = new FileInfo(filePath).Length;
         }
 
-        public bool IsFileReadable()
+        /*
+         * Check if a file exists
+         */
+        public bool IsFileExisting()
         {
             return File.Exists(this.filePath);
         }
 
+        /* transfer a file over a given socket
+         * 
+         */
         public void TransferFile(Socket handler){
             StreamReader reader = new StreamReader(this.filePath);
             while(reader.Peek() >= 0)

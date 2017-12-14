@@ -1,5 +1,8 @@
 ﻿namespace Server.Routing
 {
+    /*
+     * class that make it esay to Route to a file
+     */
     public class RouteToFile : Router
     {
         FileTransfer file;

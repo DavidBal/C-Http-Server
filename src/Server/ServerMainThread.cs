@@ -33,17 +33,18 @@ namespace target
             byte[] bytes = new Byte[1024];
 
             //
-            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+            IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostAddresses("localhost")[0]);
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, this.port);
 
             Console.WriteLine(localEndPoint.ToString());
-
+            Console.WriteLine("localhost:{0}", this.port);
             // Create a TCP/IP socket.
             Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             try
             {
+                //bind port to adress
                 listener.Bind(localEndPoint);
                 listener.Listen(100);
 
@@ -57,7 +58,6 @@ namespace target
 
                     listener.BeginAccept(new AsyncCallback(WorkerThread), listener);
 
-
                     allDone.WaitOne();
                     i++;
                 }
@@ -66,7 +66,7 @@ namespace target
             {
                 Console.WriteLine(e.ToString());
             }
-    }
+        }
 
         private static void WorkerThread(IAsyncResult ar)
         {
@@ -95,7 +95,7 @@ namespace target
 
                 state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesread));
 
-                //need to read more data if the file is not finished with reading
+                //todo need to read more data if the file is not finished with reading
 
                 content = state.sb.ToString();
 

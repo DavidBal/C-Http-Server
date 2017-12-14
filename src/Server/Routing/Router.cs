@@ -21,11 +21,14 @@ namespace Server.Routing
         }
 
         /**
-         * 
+         * This function need to get implemted 
          */
         protected abstract void RouteTask();
 
 
+        /*
+         * 
+         */
         public void RunRouteTask(HttpResponde respond, HttpRequest request){
             this.request = request;
             this.respond = respond;

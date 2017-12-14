@@ -4,6 +4,9 @@ using System.Net.Sockets;
 using System.Text;
 
 namespace Server{
+    /*
+     * Collect all the things for a right http respond
+     */
     public class HttpResponde{
 
         private String responseType;
@@ -53,8 +56,6 @@ namespace Server{
             this.contentArray.Add(content);
         }
 
-        //todo file transfer;
-
         FileTransfer file = null;
 
         public void AddContent(FileTransfer file)
@@ -88,7 +89,7 @@ namespace Server{
 
             Send("HTTP/1.1 " + this.statusCode + "\n");
             DateTime now = DateTime.Now;
-            Send(now.ToLocalTime() + "\n");
+            Send("Date: " + now.ToLocalTime() + "\n");
             Send("Server: c#-Server" + "\n");
             Send("Content-Length: " + this.contentlength + "\n");
             Send("Connection: Closed" + "\n");

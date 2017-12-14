@@ -38,7 +38,7 @@ namespace Server.Routing
 
             if(route is RouteToFile)
             {
-                if(((RouteToFile)route).GetFile().IsFileReadable() == false)
+                if(((RouteToFile)route).GetFile().IsFileExisting() == false)
                 {
                     route = null;
                 }
