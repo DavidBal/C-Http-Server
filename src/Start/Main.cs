@@ -1,7 +1,7 @@
 ﻿using System;
 using target;
 using Server.Routing;
-namespace Einleben
+namespace Start
 {
     public class Startup
     {

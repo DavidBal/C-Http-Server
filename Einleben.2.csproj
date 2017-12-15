@@ -27,24 +27,26 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="src\Server\HttpRequest.cs" />
-    <Compile Include="src\Server\HttpResponde.cs" />
-    <Compile Include="src\Server\ServerException.cs" />
-    <Compile Include="src\Server\ServerMainThread.cs" />
-    <Compile Include="src\Server\State.cs" />
-    <Compile Include="src\Main.cs" />
     <Compile Include="src\Server\Routing\Route.cs" />
     <Compile Include="src\Server\Routing\RouteTextTest.cs" />
     <Compile Include="src\Server\Routing\RoutManager.cs" />
     <Compile Include="src\Server\Routing\RoutNotFound.cs" />
-    <Compile Include="src\Server\FileTransfer.cs" />
     <Compile Include="src\Server\Routing\RouteToFile.cs" />
     <Compile Include="src\Server\Routing\AutoRoute.cs" />
+    <Compile Include="src\Server\Core\FileTransfer.cs" />
+    <Compile Include="src\Server\Core\HttpRequest.cs" />
+    <Compile Include="src\Server\Core\HttpResponde.cs" />
+    <Compile Include="src\Server\Core\ServerException.cs" />
+    <Compile Include="src\Server\Core\ServerMainThread.cs" />
+    <Compile Include="src\Server\Core\State.cs" />
+    <Compile Include="src\Start\Main.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />
     <Folder Include="src\Server\" />
     <Folder Include="src\Server\Routing\" />
+    <Folder Include="src\Server\Core\" />
+    <Folder Include="src\Start\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
