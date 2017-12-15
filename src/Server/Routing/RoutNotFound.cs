@@ -1,7 +1,10 @@
 ﻿
 namespace Server.Routing
 {
-    public class RouteNotFound : Router
+    /// <summary>
+    /// Standart implementation for route not found!
+    /// </summary>
+    public class RouteNotFound : Route
     {
         public RouteNotFound(string url) : base(url)
         {

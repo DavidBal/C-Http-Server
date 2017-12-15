@@ -27,6 +27,9 @@ namespace target
         // Thread signal
         public static ManualResetEvent allDone = new ManualResetEvent(false);
 
+        /// <summary>
+        /// Mains the loop.
+        /// </summary>
         public void MainLoop()
         {
 
@@ -68,6 +71,10 @@ namespace target
             }
         }
 
+        /// <summary>
+        /// Starts to handle a single request
+        /// </summary>
+        /// <param name="ar">Ar.</param>
         private static void WorkerThread(IAsyncResult ar)
         {
             allDone.Set();
@@ -83,6 +90,10 @@ namespace target
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
         }
 
+        /// <summary>
+        // todo
+        /// </summary>
+        /// <param name="ar">Ar.</param>
         private static void ReadCallback(IAsyncResult ar){
             String content = String.Empty;
 
@@ -106,7 +117,7 @@ namespace target
                 //Answer Building   
                 Server.HttpResponde response = new HttpResponde("POST");
 
-                Router route= ServerMainThread.routManager.GetRouteByUrl(request.GetUrl());
+                Route route= ServerMainThread.routManager.GetRouteByUrl(request.GetUrl());
 
                 route.RunRouteTask(response, request);
 

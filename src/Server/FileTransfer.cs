@@ -7,6 +7,7 @@ namespace Server
 {
     /* 
      * Class that helps with the file transferation
+     * 
      */
     public class FileTransfer
     {
@@ -16,23 +17,27 @@ namespace Server
 
         public long GetFileSize() => this.fileSize;
 
-        public FileTransfer(string filePath)
+
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:Server.FileTransfer"/> class.
+        /// Create a file transfer frome a given path.
+        /// <para />- throws <see cref="T:System.IO.IOExceptions"/>
+        /// </summary>
+        /// <param name="filePath">File path.</param>
+        /// <exception cref = "IOException" > When the file is not existing</exception>
+        public FileTransfer(string filePath)  
         {
             this.filePath = filePath;
             this.fileSize = new FileInfo(filePath).Length;
         }
 
-        /*
-         * Check if a file exists
-         */
-        public bool IsFileExisting()
-        {
-            return File.Exists(this.filePath);
-        }
+     
 
-        /* transfer a file over a given socket
-         * 
-         */
+        /// <summary>
+        /// Transfers the file over a given Socket
+        /// </summary>
+        /// <param name="handler">Handler.</param>
         public void TransferFile(Socket handler){
             StreamReader reader = new StreamReader(this.filePath);
             while(reader.Peek() >= 0)

@@ -12,7 +12,8 @@ namespace Einleben
             RoutManager routeManager = new RoutManager();
 
             routeManager.AddRoute(new RouteTextTest("/testtext"));
-            routeManager.AddRoute(new RouteToFile("/testfile","testfile.html"));
+            routeManager.CheckedAddRouteToFile("/testfile","testfile.html");
+            routeManager.CheckedAddRouteToFile("/hans", "hans.html");
 
             target.ServerMainThread test = new ServerMainThread(8080, routeManager);
             test.MainLoop();

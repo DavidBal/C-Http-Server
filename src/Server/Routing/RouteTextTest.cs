@@ -2,12 +2,18 @@
 
 namespace Server.Routing
 {
-    public class RouteTextTest : Server.Routing.Router
+    /// <summary>
+    /// The Test implementation for a Route.
+    /// </summary>
+    public class RouteTextTest : Server.Routing.Route
     {
         public RouteTextTest(string url) : base(url)
         {
         }
 
+        /// <summary>
+        /// Function that is called when the Route get called
+        /// </summary>
         protected override void RouteTask()
         {
             this.respond.SetContentType("text/html");
@@ -25,7 +31,6 @@ namespace Server.Routing
             this.respond.AddContent("<p>" + request.GetUrl() + " - This is just for Test!</p>");
             this.respond.AddContent("</body>");
             this.respond.AddContent("</html>");
-
         }
     }
 }

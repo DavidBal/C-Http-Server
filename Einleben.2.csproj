@@ -33,13 +33,13 @@
     <Compile Include="src\Server\ServerMainThread.cs" />
     <Compile Include="src\Server\State.cs" />
     <Compile Include="src\Main.cs" />
-    <Compile Include="src\Server\Routing\Router.cs" />
+    <Compile Include="src\Server\Routing\Route.cs" />
     <Compile Include="src\Server\Routing\RouteTextTest.cs" />
     <Compile Include="src\Server\Routing\RoutManager.cs" />
     <Compile Include="src\Server\Routing\RoutNotFound.cs" />
-    <Compile Include="src\Server\Routing\AutoPublishing.cs" />
     <Compile Include="src\Server\FileTransfer.cs" />
     <Compile Include="src\Server\Routing\RouteToFile.cs" />
+    <Compile Include="src\Server\Routing\AutoRoute.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />
