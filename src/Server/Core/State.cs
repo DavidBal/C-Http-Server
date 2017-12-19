@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Net.Sockets;
 
-namespace Server
+namespace Server.Core
 {
     // State object for reading client data asynchronously
     public class StateObject

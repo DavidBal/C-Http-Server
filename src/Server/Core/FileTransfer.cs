@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Text;
 using System;
 
-namespace Server
+namespace Server.Core
 {
     /* 
      * Class that helps with the file transferation
@@ -30,23 +30,56 @@ namespace Server
         {
             this.filePath = filePath;
             this.fileSize = new FileInfo(filePath).Length;
+            this.reader = null;
         }
 
-     
+        private StreamReader reader;
 
         /// <summary>
         /// Transfers the file over a given Socket
         /// </summary>
         /// <param name="handler">Handler.</param>
-        public void TransferFile(Socket handler){
-            StreamReader reader = new StreamReader(this.filePath);
-            while(reader.Peek() >= 0)
+        public void TransferFile(Socket handler)
+        {
+            if (reader == null)
             {
-                string read = reader.ReadLine();
+                this.reader = new StreamReader(this.filePath);
+            }
+
+            //Send file
+            while (this.reader.Peek() >= 0)
+            {
+                string read = this.reader.ReadLine();
                 Console.WriteLine(read);
                 handler.Send(Encoding.ASCII.GetBytes(read + "\n"));
             }
             reader.Close();
+        }
+
+        /// <summary>
+        /// Read a line
+        /// </summary>
+        /// <returns>the line from the file or null if eof is reached</returns>
+        public String ReadLine()
+        {
+            if (reader == null)
+            {
+                this.reader = new StreamReader(this.filePath);
+            }
+
+            String line;
+
+            if (this.reader.Peek() >= 0)
+            {
+                line = this.reader.ReadLine();
+            }
+            else
+            {
+                line = null;
+                this.reader.Close();
+            }
+
+            return line;
         }
     }
 }

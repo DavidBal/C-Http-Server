@@ -3,7 +3,7 @@ using System.Collections;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Server{
+namespace Server.Core{
     /*
      * Collect all the things for a right http respond
      */
@@ -21,7 +21,7 @@ namespace Server{
             this.responseType = responseType;
         }
 
-        public void setStatusCode(int? statusCode){
+        public void SetStatusCode(int? statusCode){
             this.statusCode = statusCode ?? 500;
 
             switch(statusCode/100){
@@ -96,6 +96,10 @@ namespace Server{
             //Ende headers
             Send("\n");
             //Beginn  contents
+
+            //This need to get changed to better implement Routes
+            //idea let the route handle the write to socket by himself 
+
             for (int i = 0; i < this.contentArray.Count; i++)
             {
                 String t = (String)this.contentArray[i];

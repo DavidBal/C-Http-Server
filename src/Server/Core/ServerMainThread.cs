@@ -3,10 +3,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Text;
-using Server;
 using Server.Routing;
 
-namespace target
+namespace Server.Core
 {    
     public class ServerMainThread
     {
@@ -112,10 +111,10 @@ namespace target
 
                 Console.WriteLine(content);
 
-                HttpRequest request = Server.HttpRequest.HttpRequestBuilder(state);
+                HttpRequest request = Server.Core.HttpRequest.HttpRequestBuilder(state);
 
                 //Answer Building   
-                Server.HttpResponde response = new HttpResponde("POST");
+                Server.Core.HttpResponde response = new HttpResponde("POST");
 
                 Route route= ServerMainThread.routManager.GetRouteByUrl(request.GetUrl());
 

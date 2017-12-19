@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Server
+namespace Server.Core
 {
     public class ServerException : Exception
     {

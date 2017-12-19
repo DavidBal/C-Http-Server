@@ -5,7 +5,7 @@
  */
 using System;
 using System.Collections.Generic;
-namespace Server
+namespace Server.Core
 {
     enum RequstType{
         GET, POST

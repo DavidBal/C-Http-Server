@@ -1,6 +1,7 @@
 ﻿using System;
-using target;
 using Server.Routing;
+using Server.Core;
+
 namespace Start
 {
     public class Startup
@@ -11,11 +12,16 @@ namespace Start
 
             RoutManager routeManager = new RoutManager();
 
+            OnServerRender rendertest = new OnServerRender("/testrender", "fileextra.html");
+            rendertest.AddToRenderObject("ein", "Das ist ein erstertest!");
+            rendertest.AddToRenderObject("zwei", "Das ist ein zweiter!");
+
+            routeManager.AddRoute(rendertest);
             routeManager.AddRoute(new RouteTextTest("/testtext"));
             routeManager.CheckedAddRouteToFile("/testfile","testfile.html");
             routeManager.CheckedAddRouteToFile("/hans", "hans.html");
 
-            target.ServerMainThread test = new ServerMainThread(8080, routeManager);
+            ServerMainThread test = new ServerMainThread(8080, routeManager);
             test.MainLoop();
 
             return 0;

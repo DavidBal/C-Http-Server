@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Server.Core;
 
 namespace Server.Routing
 {
@@ -25,7 +26,7 @@ namespace Server.Routing
 
         protected override void RouteTask()
         {
-            this.respond.setStatusCode(200);
+            this.respond.SetStatusCode(200);
             this.respond.SetContentType("text/html");
             this.respond.AddContent(this.file);
         }

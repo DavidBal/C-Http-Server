@@ -40,6 +40,8 @@
     <Compile Include="src\Server\Core\ServerMainThread.cs" />
     <Compile Include="src\Server\Core\State.cs" />
     <Compile Include="src\Start\Main.cs" />
+    <Compile Include="src\Server\Routing\OnServerRender.cs" />
+    <Compile Include="src\Server\Core\EmptyInterface.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />

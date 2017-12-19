@@ -17,7 +17,7 @@ namespace Server.Routing
         protected override void RouteTask()
         {
             this.respond.SetContentType("text/html");
-            this.respond.setStatusCode(200);
+            this.respond.SetStatusCode(200);
 
             this.respond.AddContent("<!DOCTYPE html>");
             this.respond.AddContent("<html>");
