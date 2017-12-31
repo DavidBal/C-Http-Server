@@ -31,10 +31,21 @@ namespace Server.Routing
             this.renderList = new SortedList();
         }
 
+
         /// <summary>
         /// Routes the task.
+        /// Empty use this function to run a function on this route you can add 
+        /// render to file objects in this functions
         /// </summary>
-        protected override void RouteTask()
+        protected override void RouteTask(){
+            
+        }
+
+
+        /// <summary>
+        /// Builds the answer
+        /// </summary>
+        private void DoRenderToFile()
         {
             String line;
 
@@ -47,12 +58,12 @@ namespace Server.Routing
             while (line != null)
             {
                 //Console.WriteLine(line);
+
                 //That the line can be checked for multi markers
                 if (line.Contains("<" + this.marker))
                 {
                     //get the marker
                     String[] substrings;
-
                     substrings = line.Split('<');
 
                     this.respond.AddContent(substrings[0]);
@@ -66,7 +77,7 @@ namespace Server.Routing
                             Console.WriteLine(substrings[i]);
                             tmp = substrings[i].Split('>');
 
-                            //
+                            //get the identifiyer
                             String id = tmp[0].Remove(0, this.marker.Length).Trim();
 
                             //get the pos in the List
@@ -96,7 +107,7 @@ namespace Server.Routing
 
 
         /// <summary>
-        /// Fast hand for string
+        /// Fast hand for string render 
         /// </summary>
         /// <param name="target">Target.</param>
         /// <param name="content">Content.</param>
@@ -109,6 +120,24 @@ namespace Server.Routing
         {
             this.renderList.Add(render.GetRenderTarget(), render);
         }
+
+
+        /// <summary>
+        /// Runs the route task.
+        /// Overrite the function.
+        /// </summary>
+        /// <param name="respond">Respond.</param>
+        /// <param name="request">Request.</param>
+        public override void RunRouteTask(HttpResponde respond, HttpRequest request)
+        {
+            this.request = request;
+            this.respond = respond;
+
+            this.RouteTask();
+
+            this.DoRenderToFile();
+        }
+
     }
 
 
@@ -120,6 +149,7 @@ namespace Server.Routing
     {
         /// <summary>
         /// The Target where that conent should be renderd
+        /// -> id 
         /// </summary>
         private String renderTarget;
 
@@ -143,6 +173,7 @@ namespace Server.Routing
 
     /// <summary>
     /// Render text object.
+    /// Fast hand for a Text based object
     /// </summary>
     public class RenderTextObject : RenderObject
     {

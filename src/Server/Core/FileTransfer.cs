@@ -18,7 +18,6 @@ namespace Server.Core
         public long GetFileSize() => this.fileSize;
 
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="T:Server.FileTransfer"/> class.
         /// Create a file transfer frome a given path.
@@ -33,6 +32,9 @@ namespace Server.Core
             this.reader = null;
         }
 
+        /// <summary>
+        /// The reader.
+        /// </summary>
         private StreamReader reader;
 
         /// <summary>
@@ -53,7 +55,8 @@ namespace Server.Core
                 Console.WriteLine(read);
                 handler.Send(Encoding.ASCII.GetBytes(read + "\n"));
             }
-            reader.Close();
+
+            this.CloseReader();
         }
 
         /// <summary>
@@ -76,10 +79,19 @@ namespace Server.Core
             else
             {
                 line = null;
-                this.reader.Close();
+                this.CloseReader();
             }
 
             return line;
+        }
+
+        /// <summary>
+        /// Closes the reader and set the reader = null
+        /// </summary>
+        private void CloseReader()
+        {
+            this.reader.Close();
+            this.reader = null;
         }
     }
 }

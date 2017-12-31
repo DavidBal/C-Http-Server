@@ -38,7 +38,7 @@ namespace Server.Routing
         /// </summary>
         /// <param name="respond">Respond.</param>
         /// <param name="request">Request.</param>
-        public void RunRouteTask(HttpResponde respond, HttpRequest request){
+        public virtual void RunRouteTask(HttpResponde respond, HttpRequest request){
             this.request = request;
             this.respond = respond;
 

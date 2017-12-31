@@ -1,7 +1,7 @@
 ﻿/* David Baldauf 
  * 
  * GET - should work fine
- * POST - untested
+ * POST - unimplemented
  */
 using System;
 using System.Collections.Generic;
