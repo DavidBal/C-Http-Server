@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Text;
 using Server.Routing;
+using System.IO;
 
 namespace Server.Core
 {    
@@ -77,54 +78,24 @@ namespace Server.Core
         private static void WorkerThread(IAsyncResult ar)
         {
             allDone.Set();
-
             //Get the socket that handle Client request
             Socket listener = (Socket)ar.AsyncState;
             Socket handler = listener.EndAccept(ar);
 
+            StreamReader input = new StreamReader(new NetworkStream(handler));;
+            HttpRequest request = HttpRequest.HttpRequestBuilder(input);
 
-            StateObject state = new StateObject();
-            state.workSocket = handler;
+            //Answer Building   
+            Server.Core.HttpResponde response = new HttpResponde("POST");
 
-            handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
-        }
+            Route route = ServerMainThread.routManager.GetRouteByUrl(request._url);
 
-        /// <summary>
-        // todo
-        /// </summary>
-        /// <param name="ar">Ar.</param>
-        private static void ReadCallback(IAsyncResult ar){
-            String content = String.Empty;
+            route.RunRouteTask(response, request);
 
-            StateObject state = (StateObject)ar.AsyncState;
-            Socket handler = state.workSocket;
+            response.SendHttpRespond(handler);
 
-            int bytesread = handler.EndReceive(ar);
-
-            if ( 0 < bytesread ){
-
-                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesread));
-
-                //todo need to read more data if the file is not finished with reading
-
-                content = state.sb.ToString();
-
-                Console.WriteLine(content);
-
-                HttpRequest request = Server.Core.HttpRequest.HttpRequestBuilder(state);
-
-                //Answer Building   
-                Server.Core.HttpResponde response = new HttpResponde("POST");
-
-                Route route= ServerMainThread.routManager.GetRouteByUrl(request.GetUrl());
-
-                route.RunRouteTask(response, request);
-
-                response.SendHttpRespond(handler);
-
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
-            }
+            handler.Shutdown(SocketShutdown.Both);
+            handler.Close();
         }
     }
 }

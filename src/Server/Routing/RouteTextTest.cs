@@ -28,7 +28,7 @@ namespace Server.Routing
             this.respond.AddContent("</head>");
             this.respond.AddContent("<body>");
             this.respond.AddContent("<h1>Standart Text implementation</h1>");
-            this.respond.AddContent("<p>" + request.GetUrl() + " - This is just for Test!</p>");
+            this.respond.AddContent($"<p>{request._url} - This is just for Test!</p>");
             this.respond.AddContent("</body>");
             this.respond.AddContent("</html>");
         }

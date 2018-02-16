@@ -4,6 +4,7 @@
  * POST - unimplemented
  */
 using System;
+using System.IO;
 using System.Collections.Generic;
 namespace Server.Core
 {
@@ -14,16 +15,19 @@ namespace Server.Core
     public class HttpRequest
     {
         private RequstType requestType;
-        private String url;
 
-        public String GetUrl() => this.url;
+        public String _url
+        {
+            get;
+            set;
+        }
 
-        public StateObject state;
-        public void AddStateObject(StateObject state) => this.state = state;
+        private int _length;
+
 
 
         //
-        private String requestContent;
+        private String _requestContent;
 
         //todo enum of all request types?
         Dictionary<String, String> requestParameter = new Dictionary<String, String>();
@@ -44,72 +48,56 @@ namespace Server.Core
                 throw new ServerException("Failed to build Httprequest - requestType do not match GET or POST - " + requestType);
             }
 
-            this.url = ExtractUrlParameter(url);
+            this._url = ExtractUrlParameter(url);
 
-            requestContent = "";
+            _requestContent = "";
         }
 
-        public static HttpRequest HttpRequestBuilder(StateObject state){
+        public static HttpRequest HttpRequestBuilder(StreamReader input)
+        {
             // get first Line 
             // First Line schould look like GET/POST url HTTP/1.1
-            String workString = state.sb.ToString();
+            String firstLine = input.ReadLine();
 
-            String[] split = workString.Split('\n');
-
-            String[] firstLineSplit = split[0].Split(' ');
+            String[] firstLineSplit = firstLine.Split(' ');
 
             HttpRequest request = new HttpRequest(firstLineSplit[0], firstLineSplit[1]);
 
-            Console.WriteLine(split.Length);
+      
             bool endofhead = false;
 
             while (endofhead == false)
             {
-                endofhead = request.AddRequestParameter(split, endofhead);
-                if (endofhead == false)
+                String line = input.ReadLine();
+
+                Console.WriteLine(line);
+
+                if (line.Length != 0)
                 {
-                    //Read more from socket
-                    state.workSocket.Receive(state.buffer);
-                    workString = state.sb.ToString();
-                    split = workString.Split('\n');
+                    String[] helper = line.Split(':');
+                    request.requestParameter.Add(helper[0], helper[1]);
+                } else {
+                    endofhead = true;
                 }
             }
 
-            if (request.requestType == RequstType.POST){
-                //todo need to find content lenght field
+            if (request.requestType == RequstType.POST)
+            {
+                request.FindContentLength();
+                Console.WriteLine(request._length);
+
+                char[] buffer = new char[request._length];
+
+                //only read content length
+                input.Read(buffer, 0, request._length);
+                request._requestContent = new string(buffer);
+
+                Console.WriteLine(request._requestContent);
             }
 
-            Console.WriteLine("Finished Building Request for : {0}", request.url);
+            Console.WriteLine($"Finished Building Request for : {request._url}");
 
             return request;
-        }
-
-        private bool AddRequestParameter(String[] array, bool endofhead){
-            int i = 1;
-
-            while (i < array.Length && endofhead == false)
-            {
-                Console.WriteLine(i + " : " + array[i]);
-                if (array[i].Length <= 1)
-                {
-                    //End of http-Head reached
-                    endofhead = true;
-
-                    //Content only need to be saved when request type is post
-                    while (i < array.Length && requestType == RequstType.POST)
-                    {
-                        this.requestContent += array[i];
-                    }
-                }
-                else
-                {
-                    //add http-head parameter
-                    String[] helper = array[i].Split(':');
-                    this.requestParameter.Add(helper[0], helper[1]);
-                }
-                i++;
-            }
-            return endofhead;
         }
 
         private String ExtractUrlParameter(String url)
@@ -134,6 +122,14 @@ namespace Server.Core
             //Console.WriteLine(this.urlParameter.Count);
 
             return tmp[0];
+        }
+
+        private void FindContentLength()
+        {
+            if (this.requestParameter.TryGetValue("Content-Length", out string slength))
+            {
+                this._length = Int32.Parse(slength) ;
+            } 
         }
     }
 }

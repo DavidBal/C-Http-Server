@@ -24,7 +24,7 @@ namespace Server.Routing
             this.respond.AddContent("</head>");
             this.respond.AddContent("<body>");
             this.respond.AddContent("<h1>Not Found</h1>");
-            this.respond.AddContent("<p>" + request.GetUrl() + " - has no Route assigend!</p>");
+            this.respond.AddContent($"<p>{request._url} - has no Route assigend!</p>");
             this.respond.AddContent("</body>");
             this.respond.AddContent("</html>");
         }
